@@ -1,24 +1,18 @@
 package com.example.gatewayapp.security.util;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
+import javax.crypto.SecretKey;
 
 public class JwtUtil {
 
-    private static final String SECRET = "chave-super-secreta-para-teste";
-
-    private static Key getSigningKey() {
-        return new SecretKeySpec(SECRET.getBytes(StandardCharsets.UTF_8),
-                SignatureAlgorithm.HS256.getJcaName());
-    }
+    private static final String SECRET = "zH7uZ8A9bC1dE2fG3hI4jK5lM6nO7pQ8"; // >= 32 chars
+    public static final SecretKey SECRET_KEY = Keys.hmacShaKeyFor(SECRET.getBytes());
 
     public static void validateToken(String token) {
         Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
+                .setSigningKey(SECRET_KEY)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
